@@ -118,14 +118,14 @@ router.delete('/:id', async (req, res) => {
 router.get('/:id/comments', async (req, res) => {
 	const thisID = req.params.id;
 	try {
-		const possiblePost = await Posts.findById(thisID);
-		if (!possiblePost) {
+		const possiblePosts = await Posts.findPostComments(thisID);
+		if (possiblePosts.length > 0) {
+			console.log('possiblePost: ', possiblePosts);
+			res.status(200).json(possiblePosts);
+		} else {
 			res.status(404).json({
 				message: 'The post with the specified ID does not exist'
 			});
-		} else {
-			console.log('possiblePost comments: ', possiblePost.comments);
-			res.status(200).json(possiblePost.comments);
 		}
 	} catch (error) {
 		console.log(error);
